@@ -15,7 +15,34 @@ const createPost = async (req, res) => {
   res.status(201).json({ post });
 };
 
+const getSinglePost = async (req, res) => {
+  const { postId } = req.params;
+  const post = await Post.findById(postId);
+  res.status(200).json({ post });
+};
+
+const updatePost = async (req, res) => {
+  const { postId } = req.params;
+  const post = await Post.findByIdAndUpdate(
+    postId,
+    { ...req.body },
+    {
+      new: true,
+    }
+  );
+  res.status(200).json({ post });
+};
+
+const deletePosts = async (req, res) => {
+  const { postId } = req.params;
+  await Post.findByIdAndDelete(postId);
+  res.status(201).json({ msg: "Post deleted" });
+};
+
 module.exports = {
+  deletePosts,
+  updatePost,
+  getSinglePost,
   getPost,
   createPost,
 };
