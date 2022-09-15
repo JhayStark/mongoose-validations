@@ -5,15 +5,19 @@ const {
   deletePosts,
   getSinglePost,
   updatePost,
+  getAllPostsByUser,
 } = require("./posts.controller");
+const { authRequired } = require("../middlewares/authRequired");
 
 const postRouter = router();
 
-postRouter.route("/").get(getPost).post(createPost);
+postRouter.route("/").all(authRequired).get(getPost).post(createPost);
 postRouter
   .route("/:postId")
+  .all(authRequired)
   .get(getSinglePost)
   .patch(updatePost)
-  .delete(deletePosts);
+  .delete(deletePosts)
+  .get(getAllPostsByUser);
 
 module.exports = postRouter;
